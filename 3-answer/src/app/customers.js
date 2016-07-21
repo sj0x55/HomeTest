@@ -14,7 +14,10 @@ Customers.prototype.getAll = function (options = {}) {
   return readData(this.extended && this.extended.read, this.dataFilePath)
     .then(preprocessData)
     .then((items) => {
-      return filterDataBy(items, options)
+      return filterDataBy(items, options);
+    })
+    .then((items) => {
+      return items.filter(utils.isObject);
     })
     .then((items) => {
       return sortData(items, {
@@ -32,7 +35,7 @@ Customers.prototype.getAll = function (options = {}) {
  */
 Customers.prototype.toHTML = function (item) {
   return item && `
-    <p>${item.user_id} | ${item.name} | ${fixedDistance(item.distance, 2) || '-'} ${CONSTANTS.KM_UNITS}</p>
+    <p>${item.user_id} | ${item.name} (${fixedDistance(item.distance, 2) || '-'} ${CONSTANTS.KM_UNITS})</p>
   ` || undefined;
 };
 
@@ -123,8 +126,27 @@ function preprocessItem(item) {
  */
 function sortData(items, options = {}) {
   return items.sort((a, b) => {
-    return a[options.sortBy] - b[options.sortBy];
+    return sortingFn(a, b, options);
   });
+}
+/**
+ * Sorting callback with sorting logic
+ *
+ * @param {Object} a
+ * @param {Object} b
+ * @param {Object} options
+ * @return {Number}
+ */
+function sortingFn(a, b, options) {
+  if (!a[options.sortBy] || !b[options.sortBy]) {
+    return 0;
+  }
+
+  if (options.sortDirection === CONSTANTS.SORT_DIRECTIONS.ASC) {
+    return a[options.sortBy] - b[options.sortBy];
+  } else {
+    return b[options.sortBy] - a[options.sortBy];
+  }
 }
 
 // Needs for test private API
@@ -136,7 +158,8 @@ if (process.env.NODE_ENV === 'test') {
     preprocessData: preprocessData,
     preprocessItem: preprocessItem,
     fixedDistance: fixedDistance,
-    sortData: sortData
+    sortData: sortData,
+    sortingFn: sortingFn
   };
 }
 

@@ -2,6 +2,7 @@ import log from 'log';
 import utils from 'utils';
 import JsonReader from 'json-reader';
 import Customers from './customers';
+import CONSTANTS from './constants';
 
 function app() {
   let customer;
@@ -12,7 +13,7 @@ function app() {
   customer.getAll({
     maxDistance: 100,
     sortBy: 'user_id',
-    sortDirection: 'ASC'
+    sortDirection: CONSTANTS.SORT_DIRECTIONS.ASC
   })
   .then((data) => {
     drawOnSite(customer.toHTML, data);
