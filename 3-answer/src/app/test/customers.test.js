@@ -1,6 +1,6 @@
-import Customer from '../customer';
+import Customers from '../customers';
 
-describe('Checking Customer module', function() {
+describe('Checking Customers module', function() {
   it('todo', function() {
     // todo
   });
