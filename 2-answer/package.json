@@ -1,0 +1,12 @@
+{
+  "name": "home-test-2-answer",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "mocha src/test/flatten-array.test.js"
+  },
+  "author": "Slawomir Janczewski",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  }
+}
