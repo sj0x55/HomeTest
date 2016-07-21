@@ -52,7 +52,7 @@ module.exports = (function() {
     },
     plugins: [
       new webpack.optimize.DedupePlugin(),
-      new webpack.DefinePlugin({}),
+      // new webpack.DefinePlugin({}),
       new webpack.optimize.UglifyJsPlugin({
         mangle: {
           except: ['exports', 'require']
