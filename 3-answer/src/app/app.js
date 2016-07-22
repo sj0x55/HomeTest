@@ -7,7 +7,7 @@ import CONSTANTS from './constants';
 function app() {
   let customer;
 
-  // extending Customer prototype to add ability read json file (like mixin). Needs to limited dependencies.
+  // extending Customer prototype adding ability read json file (like mixin). Needs to limited dependencies.
   utils.extend(Customers.prototype, JsonReader.prototype);
 
   customer = new Customers();
