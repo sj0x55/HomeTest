@@ -11,13 +11,22 @@ var karmaServer = require('karma').Server;
 gulp.task('default', ['webpack']);
 
 gulp.task('copy', function(cb) {
-  gulp.src(settings.srcPath.concat('data/customers.json')).pipe(gulp.dest(settings.distPath.concat('data')));
+  gulp.src(settings.srcPath.concat('data/customers.txt')).pipe(gulp.dest(settings.distPath.concat('data')));
   gulp.src(settings.srcPath.concat('other/index.html')).pipe(gulp.dest(settings.distPath.concat('other')));
   cb();
 });
 
 gulp.task('webpack', ['copy'], function(cb) {
-  webpack(require(settings.webpackConfigPath)).run(function(err, stats) {
+  var webpackConfig = require(settings.webpackConfigPath);
+
+  if (process.argv.indexOf('--production') !== -1) {
+    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
+      mangle: { except: ['exports', 'require']},
+      output: {comments: false}
+    }));
+  }
+
+  webpack(webpackConfig).run(function(err, stats) {
     if (err) {
       throw new gutil.PluginError('webpack', err);
     }

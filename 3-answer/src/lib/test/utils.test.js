@@ -112,8 +112,9 @@ describe('Checking cordinates', function() {
   });
 
   it('should extended test() function from constructor', function() {
-    let obj1 = function () {};
-    let obj2 = function () {};
+    let
+      obj1 = function () {},
+      obj2 = function () {};
 
     obj2.test = function () {};
     utils.extend(obj1, obj2);

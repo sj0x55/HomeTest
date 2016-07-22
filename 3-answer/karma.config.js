@@ -5,6 +5,10 @@ module.exports = function(config) {
   var webpackConfig = require('./webpack.config.js');
   var preprocessors = {};
 
+  webpackConfig.plugins.push(new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('test')
+  }));
+
   preprocessors[settings.srcPath.concat('main-test.js')] = ['webpack', 'sourcemap'];
 
   config.set({
@@ -25,6 +29,15 @@ module.exports = function(config) {
     ],
     preprocessors: preprocessors,
     webpack: webpackConfig,
+    webpackServer: {
+      noInfo: true
+    },
+    webpackMiddleware: {
+      stats: {
+        chunks: false,
+      },
+      noInfo: true
+    },
     port: 9876,
     colors: true,
     autoWatch: true,

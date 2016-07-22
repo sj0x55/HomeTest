@@ -2,7 +2,7 @@ import utils from 'utils';
 import CONSTANTS from './constants';
 
 function Customers() {
-  this.dataFilePath = './data/customers.json';
+  this.dataFilePath = './data/customers.txt';
 }
 /**
  * Get all items using Reader object
@@ -20,10 +20,14 @@ Customers.prototype.getAll = function (options = {}) {
       return items.filter(utils.isObject);
     })
     .then((items) => {
-      return sortData(items, {
-        sortBy: options.sortBy,
-        sortDirection: options.sortDirection
-      });
+      if (options.sortBy) {
+        return sortData(items, {
+          sortBy: options.sortBy,
+          sortDirection: options.sortDirection
+        });
+      } else {
+        return items;
+      }
     });
 };
 /**
@@ -114,7 +118,7 @@ function preprocessItem(item) {
   try {
     return item && JSON.parse(item) || undefined;
   } catch (err) {
-    throw [err, '/@@MODULE_PATH/readData()'];
+    throw [err, '/@@MODULE_PATH/preprocessItem()'];
   }
 }
 /**
@@ -142,10 +146,10 @@ function sortingFn(a, b, options) {
     return 0;
   }
 
-  if (options.sortDirection === CONSTANTS.SORT_DIRECTIONS.ASC) {
-    return a[options.sortBy] - b[options.sortBy];
-  } else {
+  if (options.sortDirection === CONSTANTS.SORT_DIRECTIONS.DESC) {
     return b[options.sortBy] - a[options.sortBy];
+  } else {
+    return a[options.sortBy] - b[options.sortBy];
   }
 }
 

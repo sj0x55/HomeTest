@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "test": "gulp test",
-    "build": "gulp webpack",
+    "build": "gulp webpack --production",
+    "build-dev": "gulp webpack",
     "watch": "gulp webpack-dev-server",
     "start": "live-server --open=dist --port=3000 --host=127.0.0.1"
   },
@@ -28,6 +29,7 @@
     "mocha": "^2.4.5",
     "phantomjs": "^2.1.7",
     "phantomjs-prebuilt": "^2.1.7",
+    "raw-loader": "^0.5.1",
     "sinon": "^1.17.4",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"

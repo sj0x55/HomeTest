@@ -24,7 +24,7 @@ JsonReader.prototype.read = function (filePath) {
  */
 function sendAjaxRequest(filePath, onSuccess, onError) {
   (new Ajax(filePath))
-    .on('success', function (event, data) {
+    .on('success', (event, data) => {
       onSuccess(data);
     })
     .on('error', onError)

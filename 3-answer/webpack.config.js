@@ -51,16 +51,7 @@ module.exports = (function() {
       ignorePath: '.eslintignore'
     },
     plugins: [
-      new webpack.optimize.DedupePlugin(),
-      // new webpack.DefinePlugin({}),
-      new webpack.optimize.UglifyJsPlugin({
-        mangle: {
-          except: ['exports', 'require']
-        },
-        output: {
-          comments: false
-        }
-      })
+      new webpack.optimize.DedupePlugin()
     ]
   };
 })();

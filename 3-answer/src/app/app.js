@@ -2,7 +2,6 @@ import log from 'log';
 import utils from 'utils';
 import JsonReader from 'json-reader';
 import Customers from './customers';
-import CONSTANTS from './constants';
 
 function app() {
   let customer;
@@ -14,13 +13,14 @@ function app() {
 
   customer.getAll({
     maxDistance: 100,
-    sortBy: 'user_id',
-    sortDirection: CONSTANTS.SORT_DIRECTIONS.ASC
+    sortBy: 'user_id'
   })
   .then((data) => {
-    drawOnSite(customer.toHTML, data);
+    document.body.innerHTML = generateHTML(customer.toHTML, data);
   })
-  .catch(onError);
+  .catch((error) => {
+    log([error, '@@MODULE_PATH/app()']);
+  });
 }
 
 /**
@@ -29,28 +29,16 @@ function app() {
  *
  * @param {Function} mapper
  * @param {Array} data
- * @return {void}
+ * @return {String}
  */
-function drawOnSite(mapper, data) {
-  document.body.innerHTML = (data) && data.map(mapper).join('') || '';
-}
-
-/**
- * private:
- * Handle error
- *
- * @param {Error} error
- * @return {void}
- */
-function onError(error) {
-  log([error, '@@MODULE_PATH/app()']);
+function generateHTML(mapper, data) {
+  return (data) && data.map(mapper).join('') || '';
 }
 
 // Needs for test private API
 if (process.env.NODE_ENV === 'test') {
   app.privates = {
-    drawOnSite: drawOnSite,
-    onError: onError
+    generateHTML: generateHTML
   };
 }
 
