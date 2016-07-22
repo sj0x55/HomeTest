@@ -5,4 +5,5 @@
 ```npm start```
 
 # Running test
+```npm install```
 ```npm test```
