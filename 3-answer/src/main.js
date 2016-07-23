@@ -1,3 +1,5 @@
+'use strict';
+
 import log from 'log';
 import app from './app/app';
 
