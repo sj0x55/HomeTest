@@ -1,6 +1,6 @@
 import utils from '../utils';
 
-describe('Checking types', function() {
+describe('utils - checking types', function() {
   it('should return correct type', function() {
     let types = {
       '[object Undefined]': undefined,
@@ -66,7 +66,7 @@ describe('Checking types', function() {
   });
 });
 
-describe('Checking cordinates', function() {
+describe('utils - checking cordinates', function() {
   it('should check if point contains correct coordinates', function() {
     expect(utils.validPointCordinates({ lat: 0, lng: 0 })).to.be.true;
     expect(utils.validPointCordinates({ lat: 50, lng: 10 })).to.be.true;
@@ -89,7 +89,7 @@ describe('Checking cordinates', function() {
   });
 });
 
-describe('Checking cordinates', function() {
+describe('utils - checking cordinates', function() {
   it('should check if point contains correct coordinates', function() {
     expect(utils.validPointCordinates({ lat: 0, lng: 0 })).to.be.true;
     expect(utils.validPointCordinates({ lat: 50, lng: 10 })).to.be.true;
@@ -119,12 +119,8 @@ describe('Checking cordinates', function() {
     obj2.test = function () {};
     utils.extend(obj1, obj2);
 
-    expect(obj1.test).to.be.undefined;
-    expect(obj1.extended).to.be.a('object');
-    expect(obj1.extended.test).to.be.a('function');
-
+    expect(obj1.test).to.be.a('function');
     expect(obj2.test).to.be.a('function');
-    expect(obj2.extended).to.be.undefined;
   });
 
   it('should extended test() function from object', function() {
@@ -134,8 +130,6 @@ describe('Checking cordinates', function() {
       test: function () {}
     });
 
-    expect(obj1.test).to.be.undefined;
-    expect(obj1.extended).to.be.a('object');
-    expect(obj1.extended.test).to.be.a('function');
+    expect(obj1.test).to.be.a('function');
   });
 });

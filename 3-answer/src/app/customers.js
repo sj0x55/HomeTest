@@ -11,7 +11,7 @@ function Customers() {
  * @return {Promise}
  */
 Customers.prototype.getAll = function (options = {}) {
-  return readData(this.extended && this.extended.read, this.dataFilePath)
+  return readData(this.read, this.dataFilePath)
     .then(preprocessData)
     .then((items) => {
       return filterDataBy(items, options);

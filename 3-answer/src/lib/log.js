@@ -70,8 +70,8 @@ log.info = (...args) => {
  */
 function normalizeLogArguments(error, location, type) {
   if (utils.isArray(error)) {
-    error = (error[0] instanceof Error) ? error[0] : Error(error[0]);
     location = error[1] || location;
+    error = (error[0] instanceof Error) ? error[0] : Error(error[0]);
   } else if (utils.isString(error)) {
     error = Error(error);
   } else if (!(error instanceof Error)) {
@@ -86,7 +86,8 @@ function normalizeLogArguments(error, location, type) {
 // Needs for test private API
 if (process.env.NODE_ENV === 'test') {
   log.privates = {
-    normalizeLogArguments: normalizeLogArguments
+    normalizeLogArguments: normalizeLogArguments,
+    TYPES: TYPES
   };
 }
 

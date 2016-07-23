@@ -54,26 +54,45 @@ let utils = {
     return utils.isObject(point) && utils.isNumber(point.lat) && utils.isNumber(point.lng);
   },
   /**
+   * Converted degrees to radians
+   *
+   * @param {Object} point
+   * @return {Boolean}
+   */
+  toRadians: (function () {
+    const PI180 = Math.PI / 180;
+
+    return (degrees) => {
+      return degrees * PI180;
+    };
+  })(),
+  /**
    * Calculate distance from 2 points (without using degrees)
+   * linK: http://andrew.hedges.name/experiments/haversine/
    *
    * @param {Object} pointA
    * @param {Object} pointB
    * @return {Number}
    */
-  calculateDistance: function (pointA = {}, pointB = {}) {
-    if (utils.validPointCordinates(pointA) && utils.validPointCordinates(pointB)) {
-      let powArg1, sqrtPart1, sqrtPart2, circumference;
+  calculateDistance: (function () {
+    const DOUBLED_EARTH_RADIUS = 12742;
 
-      circumference = 12756.274 * Math.PI;
-      powArg1 = (pointB.lat - pointA.lat) * Math.cos(pointA.lng * Math.PI / 180);
-      sqrtPart1 = Math.pow(powArg1, 2);
-      sqrtPart2 = Math.pow(pointB.lng - pointA.lng, 2);
+    return (pointA = {}, pointB = {}) => {
+      if (utils.validPointCordinates(pointA) && utils.validPointCordinates(pointB)) {
+        let
+          radiansDiffLat = utils.toRadians(pointB.lat - pointA.lat),
+          radiansDiffLng = utils.toRadians(pointB.lng - pointA.lng);
 
-      return Math.abs(Math.sqrt(sqrtPart1 + sqrtPart2) * (circumference / 360));
-    } else {
-      throw ['One of the point are not validated', '/@@MODULE_PATH/calculateDistance()'];
-    }
-  },
+        return DOUBLED_EARTH_RADIUS * Math.asin(Math.sqrt(
+          Math.pow(Math.sin(radiansDiffLat / 2), 2) +
+          Math.cos(utils.toRadians(pointA.lat)) * Math.cos(utils.toRadians(pointB.lat)) *
+          Math.pow(Math.sin(radiansDiffLng / 2), 2)
+        ));
+      } else {
+        throw ['One of the point are not validated', '/@@MODULE_PATH/calculateDistance()'];
+      }
+    };
+  })(),
   /**
    * Extended source object using target functions
    *
@@ -83,10 +102,8 @@ let utils = {
    */
   extend: function (source, target) {
     if (source && target) {
-      source.extended = source.extended || {};
-
       for (var name in target) {
-        source.extended[name] = target[name];
+        source[name] = target[name];
       }
     } else {
       throw ['Source or target are not correct', '/@@MODULE_PATH/extend()'];
